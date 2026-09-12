@@ -1,0 +1,16 @@
+services:
+  floci:
+    image: floci/floci:latest
+    ports:
+      - "4566:4566"
+
+    environment:
+      # Tell Floci to use persistent storage instead of in-memory storage.
+      FLOCI_STORAGE_MODE: persistent
+
+      # Store persistent Floci state in the mounted host directory.
+      FLOCI_STORAGE_PERSISTENT_PATH: /app/data
+
+    volumes:
+      # Persist Floci state on the Windows host.
+      - ./data:/app/data

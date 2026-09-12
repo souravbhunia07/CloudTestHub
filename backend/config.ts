@@ -16,5 +16,8 @@ export const config = {
   s3BucketName: process.env.S3_BUCKET_NAME || 'cloudtesthub-results',
 
   // Read the DynamoDB table name from environment configuration.
-  dynamodbTableName: process.env.DYNAMODB_TABLE_NAME || 'CloudTestRuns'
+  dynamodbTableName: process.env.DYNAMODB_TABLE_NAME || 'CloudTestRuns',
+
+  // Read the SQS queue name from environment configuration.
+  sqsQueueName: process.env.SQS_QUEUE_NAME || 'cloudtesthub-test-runs'
 };

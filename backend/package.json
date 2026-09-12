@@ -10,7 +10,11 @@
     "test:report": "playwright show-report",
     "build": "tsc",
     "upload-results": "npm run build && node dist/src/storage/uploadResults.js",
-    "database:test": "npm run build && node dist/src/database/testDatabase.js"
+    "database:test": "npm run build && node dist/src/database/testDatabase.js",
+    "test:cloud": "npm run build && node dist/src/runner/runTests.js",
+    "queue:test": "npm run build && node dist/src/queue/testQueue.js",
+    "queue:producer": "npm run build && node dist/src/queue/testProducer.js",
+    "queue:worker": "npm run build && node dist/src/queue/worker.js"
   },
   "keywords": [],
   "author": "",
