@@ -35,7 +35,7 @@ async function startWorker(): Promise<void> {
         QueueUrl: queueUrl,
         MaxNumberOfMessages: 1,
         WaitTimeSeconds: 10,
-        VisibilityTimeout: 300
+        VisibilityTimeout: 15
       })
     );
 

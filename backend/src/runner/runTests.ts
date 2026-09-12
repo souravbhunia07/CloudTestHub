@@ -102,6 +102,12 @@ export async function executeTestRun(
       `${results.failed} failed, ` +
       `${results.skipped} skipped`
     );
+
+    // Signal to the SQS worker that the test execution itself failed.
+    if (exitCode !== 0) {
+      // Throwing here prevents the worker from deleting the SQS message.
+      throw new Error(`Playwright execution failed for run ${runId}`);
+    }
   } catch (error) {
     // Calculate execution time even when something goes wrong.
     const duration = Date.now() - executionStart;
