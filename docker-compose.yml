@@ -3,14 +3,53 @@ services:
     image: floci/floci:latest
     ports:
       - "4566:4566"
-
     environment:
-      # Tell Floci to use persistent storage instead of in-memory storage.
+      # Run Floci using persistent disk-backed storage.
       FLOCI_STORAGE_MODE: persistent
 
-      # Store persistent Floci state in the mounted host directory.
+      # Store Floci state inside the mounted data directory.
       FLOCI_STORAGE_PERSISTENT_PATH: /app/data
 
+      # Allow Floci to launch Lambda containers through Docker.
+      FLOCI_DOCKER_DOCKER_HOST: unix:///var/run/docker.sock
+
+      # Give Floci a stable hostname on the Compose network.
+      FLOCI_HOSTNAME: floci
     volumes:
-      # Persist Floci state on the Windows host.
+      # Persist Floci resources on the host machine.
       - ./data:/app/data
+
+      # Allow Floci to communicate with the Docker daemon.
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  worker:
+    build:
+      # Build the worker image from the backend directory.
+      context: ./backend
+
+    environment:
+      # Use the Floci Compose service instead of localhost from inside Docker.
+      AWS_ENDPOINT_URL: http://floci:4566
+
+      # Use the same AWS-compatible region as the local environment.
+      AWS_DEFAULT_REGION: us-east-1
+
+      # Use Floci's local development credentials.
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+
+      # Tell the worker which S3 bucket stores test artifacts.
+      S3_BUCKET_NAME: cloudtesthub-results
+
+      # Tell the worker which DynamoDB table stores test runs.
+      DYNAMODB_TABLE_NAME: CloudTestRuns
+
+      # Tell the worker which SQS queue contains test jobs.
+      SQS_QUEUE_NAME: cloudtesthub-test-runs
+
+    depends_on:
+      # Start Floci before starting the worker.
+      floci:
+        condition: service_healthy
+
+    restart: unless-stopped

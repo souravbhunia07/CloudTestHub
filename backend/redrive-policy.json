@@ -1,4 +1,4 @@
 {
   "RedrivePolicy": "{\"deadLetterTargetArn\":\"arn:aws:sqs:us-east-1:000000000000:cloudtesthub-test-runs-dlq\",\"maxReceiveCount\":\"3\"}",
-  "VisibilityTimeout": "15"
+  "VisibilityTimeout": "180"
 }

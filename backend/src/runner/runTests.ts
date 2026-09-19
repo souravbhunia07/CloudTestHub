@@ -103,21 +103,26 @@ export async function executeTestRun(
       `${results.skipped} skipped`
     );
 
-    // Signal to the SQS worker that the test execution itself failed.
+    // Throw after persistence and artifact upload so SQS keeps failed jobs for retry.
     if (exitCode !== 0) {
-      // Throwing here prevents the worker from deleting the SQS message.
+      // Prevent the SQS worker from deleting the failed message.
       throw new Error(`Playwright execution failed for run ${runId}`);
     }
   } catch (error) {
-    // Calculate execution time even when something goes wrong.
+    // Only update DynamoDB here when an unexpected infrastructure or runner error occurs.
     const duration = Date.now() - executionStart;
 
-    // Mark the existing run as failed instead of leaving it RUNNING.
-    await updateTestRun(runId, {
-      status: 'FAILED',
-      finishedAt: new Date().toISOString(),
-      duration
-    });
+    // Check whether the failure happened before Playwright produced its final result.
+    const message = error instanceof Error ? error.message : String(error);
+
+    if (!message.startsWith('Playwright execution failed for run')) {
+      // Mark unexpected execution errors as failed.
+      await updateTestRun(runId, {
+        status: 'FAILED',
+        finishedAt: new Date().toISOString(),
+        duration
+      });
+    }
 
     // Log the failure for debugging and CI.
     console.error(`Test run ${runId} failed:`, error);

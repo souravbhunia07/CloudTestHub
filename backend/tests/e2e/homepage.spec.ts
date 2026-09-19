@@ -6,10 +6,7 @@ test('homepage should load successfully', async ({ page }) => {
   await page.goto('https://example.com');
 
   // Verify that the page title contains the expected text.
-  // await expect(page).toHaveTitle(/Example Domain/);
-
-  // Intentionally use an incorrect title so we can validate the failure workflow.
-  await expect(page).toHaveTitle(/THIS-WILL-FAIL/);
+  await expect(page).toHaveTitle(/Example Domain/);
 
   // Verify that the main heading is visible to the user.
   await expect(

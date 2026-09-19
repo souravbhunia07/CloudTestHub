@@ -34,3 +34,7 @@ Thumbs.db
 
 # Ignore local Floci persistent state.
 data/
+
+# Ignore temporary Lambda deployment packaging artifacts.
+lambda-package/
+lambda.zip

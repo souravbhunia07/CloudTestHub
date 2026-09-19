@@ -1,0 +1,26 @@
+# Keep local environment secrets outside the Docker build context.
+.env
+.env.*
+
+# Exclude installed dependencies because the image installs them itself.
+node_modules/
+
+# Exclude TypeScript build output because Docker builds it inside the image.
+dist/
+
+# Exclude local Playwright reports and execution artifacts.
+test-results/
+playwright-report/
+
+# Exclude local Lambda deployment artifacts.
+lambda-package/
+lambda.zip
+
+# Exclude local Floci state from the worker image.
+../data/
+
+# Exclude IDE and OS metadata.
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

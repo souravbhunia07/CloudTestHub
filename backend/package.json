@@ -14,7 +14,10 @@
     "test:cloud": "npm run build && node dist/src/runner/runTests.js",
     "queue:test": "npm run build && node dist/src/queue/testQueue.js",
     "queue:producer": "npm run build && node dist/src/queue/testProducer.js",
-    "queue:worker": "npm run build && node dist/src/queue/worker.js"
+    "queue:worker": "npm run build && node dist/src/queue/worker.js",
+    "api:test": "npm run build && node dist/src/api/testRunHandler.js",
+    "lambda:test": "npm run build && node dist/src/api/testLambda.js",
+    "api:status:test": "npm run build && node dist/src/api/testStatusHandler.js"
   },
   "keywords": [],
   "author": "",
@@ -22,7 +25,9 @@
   "type": "commonjs",
   "devDependencies": {
     "@playwright/test": "^1.63.0",
+    "@types/aws-lambda": "^8.10.163",
     "@types/node": "^22.20.2",
+    "archiver": "^8.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^7.0.2"
   },
