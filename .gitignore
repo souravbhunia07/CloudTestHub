@@ -38,3 +38,11 @@ data/
 # Ignore temporary Lambda deployment packaging artifacts.
 lambda-package/
 lambda.zip
+
+# Ignore temporary local Lambda invocation test artifacts.
+backend/lambda-event.json
+backend/lambda-post-event.json
+backend/lambda-post-response.json
+backend/lambda-response.json
+backend/lambda-status-event.json
+backend/lambda-status-response.json
